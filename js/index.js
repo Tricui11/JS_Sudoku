@@ -49,6 +49,11 @@ function writeBoardToUI(board) {
         const row = Math.floor(idx / BoardType.Dimension);
         const col = idx % BoardType.Dimension;
         input.value = board.m[row][col] !== 0 ? board.m[row][col] : '';
+        if (board.move[idx + 1].isInitial) {
+            input.classList.add('initial-cell');
+        } else {
+            input.classList.remove('initial-cell');
+        }
         idx++;
     });
 }
@@ -61,6 +66,7 @@ document.getElementById('solveBtn').addEventListener('click', () => {
 
     let A = Array(BoardType.NCELLS);
     let solver = new SudokuSolver();
+    
     solver.backtrack(A, BoardType.NCELLS - board.freecount, board);
 
     if (solver.finished) {
@@ -72,5 +78,5 @@ document.getElementById('solveBtn').addEventListener('click', () => {
 
 document.getElementById('clearBtn').addEventListener('click', () => {
     const inputs = document.querySelectorAll('.sudoku-grid input');    
-    inputs.forEach(input => { input.value = ''; });
+    inputs.forEach(input => { input.value = ''; input.classList.remove('initial-cell'); });
 });
