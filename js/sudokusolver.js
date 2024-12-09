@@ -9,34 +9,33 @@ export class SudokuSolver {
     backtrack(a, k, board) {
       const c = Array(BoardType.Dimension).fill(0);
       let ncandidates;
-  
+
       if (board.freecount === 0) {
         
         this.finished = true;
       } else {
+        
         k++;
-        this.constructCandidates(k, board, c, (ncandidates) => {
-          for (let i = 0; i < ncandidates; i++) {
+        ncandidates = this.constructCandidates(k, board, c);
+
+         for (let i = 0; i < ncandidates; i++) {
             a[k] = c[i];
             this.makeMove(a, k, board);
             this.backtrack(a, k, board);
             if (this.finished) return;
             this.unmakeMove(k, board);
           }
-        });
+        };
       }
-    }
   
-    constructCandidates(k, board, c, setCandidates) {
-        console.log(1232);
-
+    constructCandidates(k, board, c) {
       const possible = Array(BoardType.Dimension + 1).fill(true);
       let { x, y } = this.nextSquare(board);
       board.move[k].x = x;
       board.move[k].y = y;
   
       let ncandidates = 0;
-      if (x === -1) return;
+      if (x === -1) return 0;
   
       this.possibleValues(x, y, board, possible);
       for (let i = 1; i <= BoardType.Dimension; i++) {
@@ -45,8 +44,8 @@ export class SudokuSolver {
           ncandidates++;
         }
       }
-  
-      setCandidates(ncandidates);
+
+      return ncandidates;
     }
   
     makeMove(a, k, board) {
@@ -91,9 +90,7 @@ export class SudokuSolver {
       return { x: -1, y: -1 };
     }
   
-    possibleValues(x, y, board, possible) {
-      let nCandidates = 0;
-  
+    possibleValues(x, y, board, possible) {  
       for (let i = 0; i < BoardType.Dimension; i++) {
         if (board.m[x][i] !== 0) {
           possible[board.m[x][i]] = false;
@@ -116,6 +113,7 @@ export class SudokuSolver {
         }
       }
   
+      let nCandidates = 0;
       for (let i = 1; i < BoardType.Dimension + 1; i++) {
         if (possible[i]) {
           nCandidates++;

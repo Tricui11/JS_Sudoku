@@ -20,8 +20,8 @@ function createSudokuGrid() {
 
 function readBoardFromUI() {
     let board = new BoardType();
-    const inputs = document.querySelectorAll('.sudoku-grid input');
-    
+    const inputs = document.querySelectorAll('.sudoku-grid input');    
+
     let idx = 0;
     inputs.forEach(input => {
         const value = input.value;
@@ -31,6 +31,9 @@ function readBoardFromUI() {
             board.m[row][col] = parseInt(value);
             board.move[idx + 1].isInitial = true;
             board.freecount--;
+        }
+        else {
+            board.m[row][col] = 0;
         }
         idx++;
     });
@@ -65,4 +68,9 @@ document.getElementById('solveBtn').addEventListener('click', () => {
     } else {
         alert("No solution found!");
     }
+});
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+    const inputs = document.querySelectorAll('.sudoku-grid input');    
+    inputs.forEach(input => { input.value = ''; });
 });

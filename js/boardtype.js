@@ -5,8 +5,8 @@ export class BoardType {
     static NCELLS = BoardType.Dimension * BoardType.Dimension;
 
     constructor() {
-      this.m = Array(BoardType.Dimension).fill().map(() => Array(BoardType.Dimension));
+      this.m = Array.from({ length: BoardType.Dimension }, () => Array(BoardType.Dimension).fill(0));
       this.freecount = BoardType.NCELLS;
-      this.move = Array(BoardType.NCELLS + 1).fill().map(() => new Point(0, 0));
+      this.move = Array(BoardType.NCELLS + 1).fill().map(() => new Point(0, 0, false, 0));
     }
 }
